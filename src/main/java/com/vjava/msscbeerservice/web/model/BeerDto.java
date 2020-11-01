@@ -37,7 +37,6 @@ public class BeerDto {
     @NotNull
     private BeerStyleEnum beerStyle;
 
-
     @Positive
     @NotNull
     private Long upc;
@@ -46,7 +45,8 @@ public class BeerDto {
     @NotNull
     private BigDecimal price;
 
-
+    @Positive
+    @NotNull
     private Integer quantityOnHand;
 
 }
