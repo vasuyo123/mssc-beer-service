@@ -1,8 +1,9 @@
 package com.vjava.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vjava.msscbeerservice.web.model.BeerDto;
-import com.vjava.msscbeerservice.web.model.BeerStyleEnum;
+import com.vjava.msscbeerservice.controller.BeerController;
+import com.vjava.msscbeerservice.model.BeerDto;
+import com.vjava.msscbeerservice.model.BeerStyleEnum;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

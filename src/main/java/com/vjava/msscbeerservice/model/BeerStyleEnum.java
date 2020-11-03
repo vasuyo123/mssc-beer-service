@@ -1,4 +1,4 @@
-package com.vjava.msscbeerservice.web.model;
+package com.vjava.msscbeerservice.model;
 
 public enum BeerStyleEnum {
 

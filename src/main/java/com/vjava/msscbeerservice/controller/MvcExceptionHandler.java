@@ -1,4 +1,4 @@
-package com.vjava.msscbeerservice.web.controller;
+package com.vjava.msscbeerservice.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
