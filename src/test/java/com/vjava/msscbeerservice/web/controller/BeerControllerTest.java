@@ -1,9 +1,11 @@
 package com.vjava.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vjava.msscbeerservice.bootstrap.BeerLoader;
 import com.vjava.msscbeerservice.controller.BeerController;
 import com.vjava.msscbeerservice.model.BeerDto;
 import com.vjava.msscbeerservice.model.BeerStyleEnum;
+import com.vjava.msscbeerservice.service.BeerService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
@@ -22,6 +25,8 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -40,6 +45,9 @@ class BeerControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @MockBean
+    BeerService beerService;
+
     @BeforeEach
     void setUp() {
     }
@@ -51,6 +59,8 @@ class BeerControllerTest {
     @Test
     void getBeerById() {
         try {
+            given(beerService.getBeerById(any())).willReturn(getValidBeerDto());
+
             ResultActions resultActions = mockMvc.perform(get("/api/v1/beer/{beerId}", UUID.randomUUID().toString())
                     .param("isCold", "yes")
                     .accept(MediaType.APPLICATION_JSON))
@@ -84,6 +94,8 @@ class BeerControllerTest {
 
         ConstrainedFields fields = new ConstrainedFields(BeerDto.class);
 
+        given(beerService.getBeerById(any())).willReturn(getValidBeerDto());
+
         mockMvc.perform(post("/api/v1/beer/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
@@ -106,6 +118,8 @@ class BeerControllerTest {
     void updateBeerById() throws Exception {
         String beerDtoJson = objectMapper.writeValueAsString(getValidBeerDto());
 
+        given(beerService.getBeerById(any())).willReturn(getValidBeerDto());
+
         mockMvc.perform(put("/api/v1/beer/" + UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
@@ -117,7 +131,7 @@ class BeerControllerTest {
                 .beerName("My Beer")
                 .beerStyle(BeerStyleEnum.ALE)
                 .price(new BigDecimal("2.99"))
-                .upc(1292929299299L)
+                .upc(BeerLoader.BEER_1_UPC)
                 .quantityOnHand(20)
                 .build();
     }
